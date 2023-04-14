@@ -12,6 +12,7 @@ const express = require("express");
 const app = express();
 
 const userRoutes = require("./routes/userRoutes");
+const Details=require("./routes/Details");
 
 app.use(express.json());
 var cors = require("cors");
@@ -19,10 +20,19 @@ app.use(cors());
 const mongoose = require("mongoose");
 
 mongoose.connect("mongodb://localhost:27017", {
-  userNewUrlParser: true,
+  /*userNewUrlParser: true,*/
   useUnifiedTopology: true,
   family: 4,
 });
+// mongoose.connection.on("error",err=>{
+//   console.log("err",err)
+// });
+
+// mongoose.connection.on("connected",(err,res)=>{
+//   console.log("mongoose is connected")
+// });
+
 app.use("/user", userRoutes);
+app.use("/user",Details);
 
 app.listen(3000, () => console.log("We can listen to you on port 3000"));

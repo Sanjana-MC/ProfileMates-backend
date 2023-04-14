@@ -1,5 +1,6 @@
 const user = require("../models/user");
 const userOTPVerification = require("../models/userOTPVerficationModel");
+const Details=require("../models/DetailsModel");
 
 const bcrypt=require("bcrypt");
 const nodemailer=require("nodemailer");
@@ -26,7 +27,7 @@ const signUp=(req, res) => {
      });
     }
     user.find({email: email}).then((result)=>{
-      console.table(result)
+     // console.table(result)
       if(result===null){
         res.json({
           status:"FAILED",
@@ -52,12 +53,12 @@ const signUp=(req, res) => {
               console.log(res)
             })
              .catch((error)=>{
-            //   //console.log(error);
-            //   //res.status(400).json({
-            //     //error: error,
-                res.status(400).json({
-               status:"FAILED",
-               message:"An error occured while saving user account!",
+            console.log(error);
+            res.status(400).json({
+            error: error,
+              //   res.status(400).json({
+              //  status:"FAILED",
+              //  message:"An error occured while saving user account!",
               })
              })       
          }
@@ -155,7 +156,12 @@ const signUp=(req, res) => {
           } else {
             //success
             await user.updateOne({ id: userId }, { verified: true });
-         
+            const newDetails = new Details({
+              userId: userId,
+              name: uName, 
+              email: email,
+            });
+            newDetails.save();
             const mail = {
               from: "student407@milagreskallianpur.edu",
               to: email,
@@ -175,10 +181,8 @@ const signUp=(req, res) => {
             };
             await transporter.sendMail(mail);
             await userOTPVerification.deleteOne({ _id:userId });
-            res.status(201).json({
-              status: "Verified",
-              message: "User Verified",
-            });
+            const message="Verified!";
+            res.status(200).json({userId,message});
           }
         }
       }
