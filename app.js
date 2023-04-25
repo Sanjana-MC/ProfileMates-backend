@@ -19,7 +19,7 @@ var cors = require("cors");
 app.use(cors());
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017", {
+mongoose.connect("mongodb+srv://beastslayer345:noel014@cluster0.mteioc9.mongodb.net/test", {
   /*userNewUrlParser: true,*/
   useUnifiedTopology: true,
   family: 4,

@@ -11,6 +11,23 @@ let transporter=nodemailer.createTransport({
       pass: "xbxhknhcfmfaffbq", 
     },
   });  
+
+ const login= async(req,res)=>{
+    const {email,password}=req.body
+    const userEmail=await user.findOne({email})
+    const pasMatch=await bcrypt.compare(password,userEmail.password)
+    if(pasMatch){
+      res.status(200).send({
+        status:true,
+        message:"Login Successful!"
+      });
+    }else{
+      res.status(401).send({
+        status: false,
+        message: "Credentials not matching :( "
+      });
+    }
+  };
   
 const signUp=(req, res) => {
     //destructuring- extracting values from an object and assiging them varaibles
@@ -180,14 +197,14 @@ const signUp=(req, res) => {
           `,
             };
             await transporter.sendMail(mail);
-            await userOTPVerification.deleteOne({ _id:userId });
+            await userOTPVerification.deleteMany({ userId });
             const message="Verified!";
             res.status(200).json({userId,message});
           }
         }
       }
     } catch (err) {
-      console.table(err)
+      console.log(err)
       res.status(403).json({
         status: err,
         message: err.mesage,
@@ -196,6 +213,7 @@ const signUp=(req, res) => {
   };
 
   module.exports={
+    login,
     signUp,
     verifyOTP,
   };

@@ -22,22 +22,22 @@ const detailsSchema = new mongoose.Schema(
       skill6: { type: String },
     },
     education: {
-      Primary: {
+      Postgraduation: {
         Institution_name: { type: String, require: true },
         Year_of_pass: { type: String, require: true },
         Score: { type: String, require: true },
       },
-      Higher: {
+      Undergraduation: {
         Institution_name: { type: String, require: true },
         Year_of_pass: { type: String, require: true },
         Score: { type: String, require: true },
       },
-      UG: {
+      PreUniversity: {
         Institution_name: { type: String, require: true },
         Year_of_pass: { type: String, require: true },
         Score: { type: String, require: true },
       },
-      PG: {
+      HigherSecondary: {
         Institution_name: { type: String },
         Year_of_pass: { type: String },
         Score: { type: String },
